@@ -1,0 +1,27 @@
+﻿<Window x:Class="Witcher3SaveToggle.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Witcher3SaveToggle"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="Who is?" SizeToContent="Height" Width="400" ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
+        Closing="MainWindow_OnClosing" DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <StackPanel x:Name="MainStackPanel">
+        <StackPanel Orientation="Horizontal" Background="AliceBlue">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Padding" Value="4"></Setter>
+                </Style>
+            </StackPanel.Resources>
+            <Button Click="OpenSettings_OnClick">Settings</Button>
+            <Button Click="TestJSON_OnClick">Create Test JSON</Button>
+        </StackPanel>
+        <Grid x:Name="UserGrid"/>
+        <Button Click="AddUser_OnClick">Add user</Button>
+    </StackPanel>
+</Window>

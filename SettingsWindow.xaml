@@ -1,0 +1,27 @@
+﻿<Window x:Class="Witcher3SaveToggle.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        Title="Settings" SizeToContent="Height" Width="400" ResizeMode="CanResize"
+        Loaded="SettingsWindow_OnLoaded" Closing="SettingsWindow_OnClosing">
+    <StackPanel>
+        <StackPanel>
+            <Label>Witcher 3 executable:</Label>
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Margin="2" Padding="2" Click="BinLocBrowse_OnClick">...</Button>
+                <TextBox x:Name="BinLocTextBox" DockPanel.Dock="Left" Margin="2" Padding="2"></TextBox>
+            </DockPanel>
+        </StackPanel>
+        <StackPanel>
+            <Label>Witcher 3 save folder:</Label>
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Margin="2" Padding="2" Click="SaveLocBrowse_OnClick">...</Button>
+                <TextBox x:Name="SaveLocTextBox" DockPanel.Dock="Left" Margin="2" Padding="2"></TextBox>
+            </DockPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
