@@ -155,4 +155,8 @@ public partial class MainWindow {
 	private void AddUser_OnClick(object sender, RoutedEventArgs e) {
 		new AddUserWindow().ShowDialog();
 	}
+
+    private void UserGrid_AddingNewItem(object sender, AddingNewItemEventArgs e) {
+
+    }
 }

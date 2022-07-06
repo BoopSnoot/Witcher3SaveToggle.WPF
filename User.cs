@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Witcher3SaveToggle; 
+namespace Witcher3SaveToggle;
 
 public class User : INotifyPropertyChanged {
     private string _codeName;
@@ -14,7 +14,7 @@ public class User : INotifyPropertyChanged {
             OnPropertyChanged("CodeName");
         }
     }
-    
+
     public string DisplayName {
         get => _displayName;
         set {
@@ -22,7 +22,7 @@ public class User : INotifyPropertyChanged {
             OnPropertyChanged("DisplayName");
         }
     }
-    
+
     public bool IsActive {
         get => _isActive;
         set {
@@ -31,6 +31,8 @@ public class User : INotifyPropertyChanged {
         }
     }
 
+    public User() { }
+
     public User(string codeName, string displayName, bool isActive) {
         _codeName = codeName;
         _displayName = displayName;
@@ -38,9 +40,8 @@ public class User : INotifyPropertyChanged {
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-    
-    private void OnPropertyChanged(string name)
-    {
+
+    private void OnPropertyChanged(string name) {
         var handler = PropertyChanged;
         handler?.Invoke(this, new PropertyChangedEventArgs(name));
     }
