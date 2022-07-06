@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         ui:WindowHelper.UseModernWindowStyle="True"
         Title="Who is?" SizeToContent="Height" Width="400" ResizeMode="CanResize" WindowStyle="SingleBorderWindow"
-        Closing="MainWindow_OnClosing" DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Closing="MainWindow_OnClosing">
     <StackPanel x:Name="MainStackPanel">
         <StackPanel Orientation="Horizontal" Background="AliceBlue">
             <StackPanel.Resources>
@@ -21,7 +21,86 @@
             <Button Click="OpenSettings_OnClick">Settings</Button>
             <Button Click="TestJSON_OnClick">Create Test JSON</Button>
         </StackPanel>
-        <Grid x:Name="UserGrid"/>
-        <Button Click="AddUser_OnClick">Add user</Button>
+        <!--<FlowDocumentScrollViewer>
+            <FlowDocument>
+                <Table x:Name="UserTable">
+                    <Table.Columns>
+                        <TableColumn />
+                        <TableColumn Width="{Binding ElementName=button, Path=ActualWidth}" />
+                        <TableColumn Width="{Binding ElementName=button, Path=ActualWidth}" />
+                    </Table.Columns>
+
+
+
+                    <TableRowGroup x:Name="UserTableRowGroup"/>
+                    <d:TableRowGroup>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph>BoopSnoot</Paragraph>
+                            </TableCell>
+
+                            <TableCell>
+                                <BlockUIContainer>
+                                    <Button HorizontalAlignment="Right" x:Name="button">Select</Button>
+                                </BlockUIContainer>
+                            </TableCell>
+
+                            <TableCell>
+                                <BlockUIContainer>
+                                    <Button HorizontalAlignment="Right">Delete</Button>
+                                </BlockUIContainer>
+                            </TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph>K8</Paragraph>
+                            </TableCell>
+
+                            <TableCell>
+                                <BlockUIContainer>
+                                    <Button HorizontalAlignment="Right">Select</Button>
+                                </BlockUIContainer>
+                            </TableCell>
+
+                            <TableCell>
+                                <BlockUIContainer>
+                                    <Button HorizontalAlignment="Right">Delete</Button>
+                                </BlockUIContainer>
+                            </TableCell>
+                        </TableRow>
+                    </d:TableRowGroup>
+                    <TableRowGroup>
+                        <TableRow>
+                            <TableCell>
+                                <BlockUIContainer>
+                                    <Button Click="AddUser_OnClick">Add user</Button>
+                                </BlockUIContainer>
+                            </TableCell>
+                        </TableRow>
+                    </TableRowGroup>
+                </Table>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>-->
+
+        <DataGrid x:Name="UserGrid" AutoGenerateColumns="False" HeadersVisibility="None">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="User" Binding="{Binding DisplayName}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Tag="{Binding CodeName}" Click="UserSelectButton_OnClick">Select</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Tag="{Binding CodeName}" Click="UserDeleteButton_OnClick">Delete</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </Window>

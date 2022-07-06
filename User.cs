@@ -37,7 +37,7 @@ public class User : INotifyPropertyChanged {
         _isActive = isActive;
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
     
     private void OnPropertyChanged(string name)
     {
