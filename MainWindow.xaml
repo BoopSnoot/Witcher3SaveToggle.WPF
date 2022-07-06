@@ -36,7 +36,7 @@
                     <DataGridTemplateColumn CanUserSort="False" CanUserReorder="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Tag="{Binding CodeName}" Click="UserSelectButton_OnClick" Margin="8,8,8,8">Select</Button>
+                                <Button Tag="{Binding}" Click="UserSelectButton_OnClick" Margin="8,8,8,8">Select</Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -44,7 +44,7 @@
                     <DataGridTemplateColumn CanUserReorder="False" CanUserSort="False">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Tag="{Binding CodeName}" Click="UserDeleteButton_OnClick" Margin="8,8,8,8">Delete</Button>
+                                <Button Tag="{Binding}" Click="UserDeleteButton_OnClick" Margin="8,8,8,8">Delete</Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

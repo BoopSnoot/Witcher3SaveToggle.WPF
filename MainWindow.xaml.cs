@@ -31,32 +31,6 @@ public partial class MainWindow {
 
 		UserGrid.ItemsSource = Users;
 
-		//for (var i = 0; i < Users.Count; i++) {
-		//	var row = new TableRow();
-
-		//	row.Cells.Add(new TableCell(new Paragraph(new Run(Users[i].DisplayName))));
-
-		//	var userSelectButton = new Button() {
-		//		Content = "Select",
-		//		Tag = Users[i].CodeName
-		//	};
-		//	if (i == 0) {
-		//		userSelectButton.SetValue(NameProperty, "button");
-		//	}
-		//	userSelectButton.Click += UserSelectButton_OnClick;
-
-		//	row.Cells.Add(new TableCell(new BlockUIContainer(userSelectButton)));
-
-		//	var userDeleteButton = new Button() {
-		//		Content = "Delete",
-		//		Tag = Users[i].CodeName
-		//	};
-		//	userSelectButton.Click += UserDeleteButton_OnClick;
-
-		//	row.Cells.Add(new TableCell(new BlockUIContainer(userDeleteButton)));
-
-		//	UserTableRowGroup.Rows.Add(row);
-		//}
 	}
 
 	private static List<User> LoadUsersFromJson() {
