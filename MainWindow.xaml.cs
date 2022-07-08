@@ -48,18 +48,12 @@ public partial class MainWindow {
 		return users ?? new List<User>();
 	}
 
-	//TODO: rewrite this it barely works
 	private static void StartWitcherBin() {
-		Process myProcess = new();
-
-		try {
-			myProcess.StartInfo.UseShellExecute = true;
-			myProcess.StartInfo.FileName = ConfigurationManager.AppSettings["WitcherBinLoc"];
-			myProcess.StartInfo.CreateNoWindow = false;
-			myProcess.Start();
-		} catch (Exception e) {
-			Console.WriteLine(e.Message);
-		}
+		var processStartInfo = new ProcessStartInfo {
+			FileName = ConfigurationManager.AppSettings["WitcherBinLoc"],
+			WorkingDirectory = Path.GetDirectoryName(ConfigurationManager.AppSettings["WitcherBinLoc"])
+		};
+		Process.Start(processStartInfo);
 	}
 
 	//Enable the save that is 
@@ -104,8 +98,8 @@ public partial class MainWindow {
 			PrimaryButtonText = "Delete",
 			CloseButtonText = "Cancel"
 		}.ShowAsync().ContinueWith(result => {
-			if (result.Result == ContentDialogResult.Primary) { 
-				Users.Remove(user); 
+			if (result.Result == ContentDialogResult.Primary) {
+				Users.Remove(user);
 				UserGrid.InvalidateVisual();
 			}
 		});
@@ -125,7 +119,11 @@ public partial class MainWindow {
 			File.WriteAllText(ConfigurationManager.AppSettings["WitcherSaveLoc"] + "\\w3st.json",
 				JsonSerializer.Serialize(newUsers));
 		} else {
-			MessageBox.Show("WitcherSaveLoc is invalid", "WitcherSaveLoc is invalid");
+			new ContentDialog {
+				Title = "WitcherSaveLoc is invalid",
+				Content = "WitcherSaveLoc is invalid",
+				PrimaryButtonText = "Exit"
+			}.ShowAsync();
 		}
 	}
 
