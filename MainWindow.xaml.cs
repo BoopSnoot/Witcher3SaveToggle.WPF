@@ -89,22 +89,6 @@ public partial class MainWindow {
 		SwitchSave(user);
 	}
 
-	private void UserDeleteButton_OnClick(object sender, RoutedEventArgs e) {
-		if (sender is not Button { Tag: User user }) return;
-
-		new ContentDialog {
-			Title = "Delete " + user.DisplayName + "'s save data?",
-			Content = "If you delete the save data, you won't be able to recover it. Do you want to delete it?",
-			PrimaryButtonText = "Delete",
-			CloseButtonText = "Cancel"
-		}.ShowAsync().ContinueWith(result => {
-			if (result.Result == ContentDialogResult.Primary) {
-				Users.Remove(user);
-				UserGrid.InvalidateVisual();
-			}
-		});
-	}
-
 	private void OpenSettings_OnClick(object sender, RoutedEventArgs e) {
 		new SettingsWindow().ShowDialog();
 	}
