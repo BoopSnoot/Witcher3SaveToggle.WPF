@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using System.Windows.Documents;
+using ModernWpf.Controls;
 
 namespace Witcher3SaveToggle;
 
@@ -22,27 +22,33 @@ public partial class MainWindow {
 	public MainWindow() {
 		InitializeComponent();
 
+		//Open settings if the required settings are not set
 		if (!SettingsWindow.IsBinLocValid(ConfigurationManager.AppSettings["WitcherBinLoc"]) ||
 			!SettingsWindow.IsSaveLocValid(ConfigurationManager.AppSettings["WitcherSaveLoc"])) {
 			new SettingsWindow().ShowDialog();
 		}
 
+		//Load users and pass them to the UserGrid
 		Users = new ObservableCollection<User>(LoadUsersFromJson());
-
 		UserGrid.ItemsSource = Users;
 
 	}
 
+
 	private static List<User> LoadUsersFromJson() {
+		//If the json file is missing return an empty list
 		if (!File.Exists(ConfigurationManager.AppSettings["WitcherSaveLoc"] + "\\w3st.json"))
 			return new List<User>();
 
+		//Read the file and decode the json
 		var jsonString = File.ReadAllText(ConfigurationManager.AppSettings["WitcherSaveLoc"] + "\\w3st.json");
 		var users = JsonSerializer.Deserialize<List<User>>(jsonString);
 
+		//If the deserialization failed return empty list
 		return users ?? new List<User>();
 	}
 
+	//TODO: rewrite this it barely works
 	private static void StartWitcherBin() {
 		Process myProcess = new();
 
@@ -56,34 +62,28 @@ public partial class MainWindow {
 		}
 	}
 
-	private void SwitchSave(int whois) {
+	//Enable the save that is 
+	private void SwitchSave(User userToSelect) {
 		var savePath = ConfigurationManager.AppSettings["WitcherSaveLoc"];
 
 		if (Directory.Exists(savePath)) {
-			var activeUser = 0;
-			for (var i = 0; i < Users.Count; i++) {
-				if (!Users[i].IsActive) continue;
+			User activeUser = Users.Where(user => user.IsActive).FirstOrDefault();
 
-				activeUser = i;
-				break;
+			if (!Directory.GetDirectories(savePath).Contains(savePath + "\\gamesaves." + userToSelect.CodeName) &&
+				!userToSelect.IsActive) {
+				Directory.CreateDirectory(savePath + "\\gamesaves." + userToSelect.CodeName);
 			}
 
-			if (!Directory.GetDirectories(savePath).Contains(savePath + "\\gamesaves." + Users[whois].CodeName) &&
-				!Users[whois].IsActive) {
-				Directory.CreateDirectory(savePath + "\\gamesaves." + Users[whois].CodeName);
-			}
+			Directory.Move(savePath + "\\gamesaves", savePath + "\\gamesaves." + activeUser.CodeName);
+			Directory.Move(savePath + "\\gamesaves." + userToSelect.CodeName, savePath + "\\gamesaves");
 
-			Directory.Move(savePath + "\\gamesaves", savePath + "\\gamesaves." + Users[activeUser].CodeName);
-			Directory.Move(savePath + "\\gamesaves." + Users[whois].CodeName, savePath + "\\gamesaves");
-
-			Users[activeUser].IsActive = false;
-			Users[whois].IsActive = true;
+			activeUser.IsActive = false;
+			userToSelect.IsActive = true;
 
 			StartWitcherBin();
 			Close();
 		} else {
-			var result = MessageBox.Show("Start Witcher 3 regardless?", "Witcher 3 save data not found",
-				MessageBoxButton.YesNo);
+			var result = MessageBox.Show("Start Witcher 3 regardless?", "Witcher 3 save data not found", MessageBoxButton.YesNo);
 
 			if (result == MessageBoxResult.Yes) StartWitcherBin();
 			else Close();
@@ -92,15 +92,23 @@ public partial class MainWindow {
 
 	private void UserSelectButton_OnClick(object sender, RoutedEventArgs e) {
 		if (sender is not Button { Tag: User user }) return;
-		SwitchSave(Users.IndexOf(user));
+		SwitchSave(user);
 	}
 
 	private void UserDeleteButton_OnClick(object sender, RoutedEventArgs e) {
 		if (sender is not Button { Tag: User user }) return;
 
-		var result = MessageBox.Show("Are you sure you want to delete " + user.DisplayName + "?",
-			"Delete user " + user.DisplayName + "?", MessageBoxButton.YesNo);
-		if (result == MessageBoxResult.Yes) Users.Remove(user);
+		new ContentDialog {
+			Title = "Delete " + user.DisplayName + "'s save data?",
+			Content = "If you delete the save data, you won't be able to recover it. Do you want to delete it?",
+			PrimaryButtonText = "Delete",
+			CloseButtonText = "Cancel"
+		}.ShowAsync().ContinueWith(result => {
+			if (result.Result == ContentDialogResult.Primary) { 
+				Users.Remove(user); 
+				UserGrid.InvalidateVisual();
+			}
+		});
 	}
 
 	private void OpenSettings_OnClick(object sender, RoutedEventArgs e) {
@@ -129,8 +137,4 @@ public partial class MainWindow {
 	private void AddUser_OnClick(object sender, RoutedEventArgs e) {
 		new AddUserWindow().ShowDialog();
 	}
-
-    private void UserGrid_AddingNewItem(object sender, AddingNewItemEventArgs e) {
-
-    }
 }
